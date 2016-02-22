@@ -7,6 +7,7 @@ public class TestTime {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        Thread.sleep(2000);
         TestTime.testTime();
     }
 
