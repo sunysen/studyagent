@@ -1,0 +1,17 @@
+/target/*
+**/target/*
+*/bin/*
+tmp/
+*.class
+*.eclipse.*
+*.iml
+*.ipr
+*.iws
+.idea
+.vagrant
+*.class
+.DS_Store
+.classpath
+.project
+dependency-reduced-pom.xml
+.idea
