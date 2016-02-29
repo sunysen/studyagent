@@ -1,8 +1,6 @@
 package com.blueware.agent;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 
 //定义扫描待修改class的visitor，visitor就是访问者模式
@@ -12,6 +10,20 @@ public class TimeClassVisitor extends ClassVisitor {
     public TimeClassVisitor(ClassVisitor cv, String className) {
         super(Opcodes.ASM5, cv);
         this.className = className;
+    }
+
+    @Override public void visitAttribute(Attribute attr) {
+        System.out.println("attr:"+attr.type);
+        super.visitAttribute(attr);
+    }
+
+    @Override public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
+        System.out.println("visitField:"+name);
+        return super.visitField(access, name, desc, signature, value);
+    }
+
+    @Override public void visitEnd() {
+        super.visitEnd();
     }
 
     //扫描到每个方法都会进入，参数详情下一篇博文详细分析
@@ -40,7 +52,8 @@ public class TimeClassVisitor extends ClassVisitor {
                     //向栈中压入方法描述
                     this.visitLdcInsn(desc);
                     //相当于com.blueware.agent.TimeUtil.getExclusiveTime("com/blueware/agent/TestTime","testTime");
-                    this.visitMethodInsn(Opcodes.INVOKESTATIC, "com/blueware/agent/TimeUtil", "getExclusiveTime", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)J", false);
+                    this.visitMethodInsn(Opcodes.INVOKESTATIC, "com/blueware/agent/TimeUtil", "getExclusiveTime", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                            false);
                 }
             };
         }
