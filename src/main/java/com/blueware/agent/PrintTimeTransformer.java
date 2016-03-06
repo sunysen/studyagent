@@ -19,17 +19,13 @@ public class PrintTimeTransformer implements ClassFileTransformer {
     //一个格式良好的类文件缓冲区（转换的结果），如果未执行转换,则返回 null。
     @Override public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)
             throws IllegalClassFormatException {
-        //简化测试demo，直接写待修改的类(com/blueware/agent/TestTime)
-        if (className != null && className.equals("com/blueware/agent/TestTime")) {
-            //读取类的字节码流
-            ClassReader reader = new ClassReader(classfileBuffer);
-            //创建操作字节流值对象，ClassWriter.COMPUTE_MAXS:表示自动计算栈大小
-            ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-            //接受一个ClassVisitor子类进行字节码修改
-            reader.accept(new TimeClassVisitor(writer, className), 8);
-            //返回修改后的字节码流
-            return writer.toByteArray();
-        }
-        return null;
+        //读取类的字节码流
+        ClassReader reader = new ClassReader(classfileBuffer);
+        //创建操作字节流值对象，ClassWriter.COMPUTE_MAXS:表示自动计算栈大小
+        ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
+        //接受一个ClassVisitor子类进行字节码修改
+        reader.accept(new TimeClassVisitor(writer, className), 8);
+        //返回修改后的字节码流
+        return writer.toByteArray();
     }
 }  
